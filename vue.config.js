@@ -10,7 +10,7 @@ const name = defaultSettings.title || 'DATAX-ADMIN' // page title
 // If your port is set to 80,
 // use administrator privileges to execute the command line.
 // For example, Mac: sudo npm run
-const port = 8082 // dev port
+const port = 8080 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -28,7 +28,7 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: false,
+    open: true,
     overlay: {
       warnings: false,
       errors: true
@@ -92,17 +92,17 @@ module.exports = {
         config => config.devtool('cheap-source-map')
       )
 
-    // config
-    //   .when(process.env.NODE_ENV !== 'development',
-    //     config => {
-    //       config
-    //         .plugin('ScriptExtHtmlWebpackPlugin')
-    //         .after('html')
-    //         .use('script-ext-html-webpack-plugin', [{
-    //         // `runtime` must same as runtimeChunk name. default is `runtime`
-    //           inline: /runtime\..*\.js$/
-    //         }])
-    //         .end()
+    config
+      .when(process.env.NODE_ENV !== 'development',
+        config => {
+          // config
+          //   .plugin('ScriptExtHtmlWebpackPlugin')
+          //   .after('html')
+          //   .use('script-ext-html-webpack-plugin', [{
+          //   // `runtime` must same as runtimeChunk name. default is `runtime`
+          //     inline: /runtime\..*\.js$/
+          //   }])
+          //   .end()
           config
             .optimization.splitChunks({
               chunks: 'all',
