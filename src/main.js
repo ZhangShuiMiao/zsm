@@ -6,7 +6,10 @@ import router from "./router";
 import store from "./store";
 import Element from 'element-ui'
 import './icons'
+import http from './utils/http'
 Vue.config.productionTip = false;
+
+Vue.prototype.$http = http
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium' // set element-ui default size

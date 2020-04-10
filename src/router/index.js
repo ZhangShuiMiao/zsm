@@ -1,28 +1,51 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue'
+import Router from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(Router)
 
-const routes = [
+/* Layout */
+import Layout from '@/layout'
+
+/* 常规路由 */
+export const constantRoutes = [
   {
-    path: "/",
-    name: "Home",
-    component: Home
+    path: '/login',
+    component: () => import('@/views/login/index'),
+    hidden: true
   },
+]
+
+export const asyncRoutes = [
   {
-    path: "/about",
-    name: "About",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
-  }
-];
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: { title: 'Profile', icon: 'user', noCache: true }
+      }
+    ]
+  },
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
+]
+/*  */
+const createRouter = () => new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
+})
 
-const router = new VueRouter({
-  routes
-});
+const router = createRouter()
 
-export default router;
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router
